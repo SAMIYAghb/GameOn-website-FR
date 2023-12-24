@@ -20,7 +20,7 @@ function editNav() {
   // } else {
   //   topnav.className = "topnav";
   // }
-  topnav.classList.add("responsive");
+  topnav.classList.toggle("responsive");
 }
  
 //close modal
