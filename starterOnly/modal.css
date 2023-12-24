@@ -527,3 +527,8 @@ footer {
   }
 }
 
+
+/* //modal add class active to bground */
+.bground.active{
+  display: block;
+}

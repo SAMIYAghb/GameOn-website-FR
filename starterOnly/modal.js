@@ -1,23 +1,37 @@
-function editNav() {
-  var x = document.getElementById("myTopnav");
-  if (x.className === "topnav") {
-    x.className += " responsive";
-  } else {
-    x.className = "topnav";
-  }
-}
-
 // DOM Elements
-const modalbg = document.querySelector(".bground");
-const modalBtn = document.querySelectorAll(".modal-btn");
-const formData = document.querySelectorAll(".formData");
+const modalBackground = document.querySelector(".bground");
+const modalCloseButton = document.querySelector(".close");
+const modalButtons = document.querySelectorAll(".modal-btn");
+const formInputs = document.querySelectorAll(".formData");
 
 // launch modal event
-modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
+modalButtons.forEach((btn) => btn.addEventListener("click", launchModal));
 
-// launch modal form
+// launch modal form *lance
 function launchModal() {
-  modalbg.style.display = "block";
+  // modalBackground.style.display = "block";
+  modalBackground.classList.add("active");
 }
 
+function editNav() {
+  const topnav = document.getElementById("myTopnav");
+  // if (topnav.className === "topnav") {
+  //   topnav.className += " responsive";
+  // } else {
+  //   topnav.className = "topnav";
+  // }
+  topnav.classList.add("responsive");
+}
+ 
+//close modal
+modalCloseButton.addEventListener("click",closeModal)
 
+function closeModal(){
+  modalBackground.classList.remove('active');
+}
+
+// $('body').click(function() {
+//   if (!$(this.target).is('#popUpForm')) {
+//     $(".modalDialog").hide();
+//   }
+// });
