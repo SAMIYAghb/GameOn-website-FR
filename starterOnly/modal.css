@@ -158,8 +158,8 @@ main {
 }
 
 .bground {
-  /* display: none; */
-  display: block;
+  display: none;
+  /* display: block; */
   position: fixed;
   z-index: 1;
   left: 0;
@@ -220,6 +220,13 @@ input {
   line-height: 0.3;
   opacity: 0;
   transition: 0.3s;
+}
+.error-message{
+  font-size: 0.4em;
+  color: #e54858;
+  display: block;
+  margin-top: 7px;
+  margin-bottom: 7px;
 }
 .formData[data-error-visible="true"]::after {
   opacity: 1;
@@ -333,6 +340,11 @@ input[data-error]::after {
   color: #fff;
   cursor: pointer;
   border: 0;
+}
+.btn-submit:disabled{
+  background-color: darkgrey;
+  opacity: .6;
+  cursor: not-allowed;
 }
 /* custom select styles */
 .custom-select {
@@ -532,4 +544,16 @@ footer {
 /* //modal add class active to bground */
 .bground.active{
   display: block;
+}
+
+.modal-confirmation .modal-body{
+  height: 95vh;
+
+  margin: 0 auto;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.modal-confirmation form{
+  position: absolute;
+  bottom: 20px;
 }
