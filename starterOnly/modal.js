@@ -242,7 +242,7 @@ form.addEventListener("submit", (event) => {
     form.submit();
     closeModal();
 
-  modalConfirm.style.display = "block";
+    modalConfirm.style.display = "block";
     
     } 
 
