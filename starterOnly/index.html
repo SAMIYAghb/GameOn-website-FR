@@ -51,17 +51,15 @@
           je m'inscris
         </button>
       </div>
+      <div class="modal-confirmation">
+        <!-- <span class="close" id="closeConfirm"></span> -->
+          <p class="succss-msg">Merci ! Votre réservation a été reçue.</p>
+    </div>
 
       <div class="bground">
         <div class="content">
           <span class="close"></span>
           <div class="modal-body">
-            <!-- <form
-              name="reserve"
-              action="index.html"
-              method="get"
-              onsubmit="return validate();"
-            > -->
             <form
             name="reserve"
             action="index.html"
@@ -109,20 +107,19 @@
                   type="date"
                   id="birthdate"
                   name="birthdate"
-                 
+                  min="19-01-01"
                 /><br>
               </div>
               <div
                 class="formData">
                 <label for="quantity">À combien de tournois GameOn avez-vous déjà participé ?</label><br>
-                <input 
-                type="number"
+                <input                 
                 class="text-control"
                 id="quantity"
                 name="quantity" 
-                min="0" 
+                type="number"
+                min="0"
                 max="99"
-               
                 >
               </div>
               <p class="text-label">A quel tournoi souhaitez-vous participer cette année ?</p>
@@ -228,12 +225,7 @@
         </div>
       </div>
 
-      <div class=" modal-confirmation">
-        <div class="content">
-          <!-- <span class="close" id="closeConfirm"></span> -->
-            <p>Merci ! Votre réservation a été reçue.</p>
-        </div>
-      </div>
+     
       
     </main>
     <footer>

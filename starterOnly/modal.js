@@ -1,19 +1,21 @@
 // DOM Elements
 const modalBackground = document.querySelector(".bground");
 const modalCloseButton = document.querySelector(".close");
+console.log(modalCloseButton);
 const modalButtons = document.querySelectorAll(".modal-btn");
 // const formInputContainer = document.querySelectorAll(".formData");
-const form = document.querySelector('form');
+const form = document.querySelector("form");
 const modalConfirm = document.querySelector(".modal-confirmation");
 // On récupère les champs
-const firstName= document.querySelector("#first");
+const firstName = document.querySelector("#first");
 const lastName = document.querySelector("#last");
 const email = document.querySelector("#email");
 const birthdate = document.querySelector("#birthdate");
 const condition = document.getElementById("checkbox1");
 const quantity = document.getElementById("quantity");
 const tournameLocation = document.getElementsByName("location");
-const submitBtn = document.querySelector('.btn-submit');
+const submitBtn = document.querySelector(".btn-submit");
+const validationModal = document.querySelector(".modal-confirmation");
 
 // launch modal event
 modalButtons.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -27,61 +29,56 @@ function editNav() {
   const topnav = document.getElementById("myTopnav");
   topnav.classList.toggle("responsive");
 }
- 
+
 //close modal
-modalCloseButton.addEventListener("click",closeModal)
+modalCloseButton.addEventListener("click", closeModal);
 //close modal function
-function closeModal(){
-  modalBackground.classList.remove('active');
+function closeModal() {
+  modalBackground.classList.remove("active");
+  resetForm();
 }
 
- // Check si inputs sont valid
-function isFirstnameValid() {
-  const trimmedFirstName = firstName.value.trim();
-  // Si le prénom est vide, afficher un message d'erreur et retourner false
-  if (trimmedFirstName === '') {
-    // Afficher un message d'erreur pour le prénom vide
-    showErrormessage(firstName, "Veuillez entrer votre prénom.");
-    return false;
-  }
 
-  // Vérifier la longueur du prénom
-  // Si le prénom est trop court, afficher un message d'erreur
-  const isValid = trimmedFirstName.length >= 2;
-  if (!isValid) {
-    // Afficher un message d'erreur pour un prénom trop court
-    showErrormessage(firstName, "Le prénom doit contenir au moins 2 caractères.");
-  } else {
-    // Effacer les messages d'erreur précédents pour le prénom
-    clearErrorMessages(firstName);
-  }
-
-  return isValid;
+// Fonction pour effectuer le trim sur la valeur d'un champ
+// La méthode trim() permet de retirer les blancs en début et fin de chaîne
+function getTrimmedValue(field) {
+  return field.value.trim();
 }
+
+// Fonction générique de validation
+function isFieldValid(field, regex, errorMessage) {
   
-function isLastnameValid() {
-  // return lastName.value.trim().length >= 2;
-  const trimmedLastName = lastName.value.trim();
-  if (trimmedLastName === '') {
-    // Afficher un message d'erreur pour le nom de famille vide
-    showErrormessage(lastName, "Veuillez entrer votre nom de famille.");
+  const trimmedValue = getTrimmedValue(field);
+  if (trimmedValue === "") {
+    showErrormessage(field, `Veuillez entrer 2 caractères ou plus pour ce champ .`);
     return false;
   }
 
-  // Vérifier la longueur du nom de famille
-  const isValid = trimmedLastName.length >= 2;
-  if (!isValid) {
-    // Afficher un message d'erreur pour un nom de famille trop court
-    showErrormessage(lastName, "Le nom de famille doit contenir au moins 2 caractères.");
-  } else {
-    // Effacer les messages d'erreur précédents pour le nom de famille
-    clearErrorMessages(lastName);
+  const isValidFormat = regex.test(trimmedValue);
+
+  if (!isValidFormat) {
+    showErrormessage(field, errorMessage);
+    return false;
   }
-  return isValid;
+
+  clearErrorMessages(field);
+  return true;
 }
+// Appliquer la Fonction générique de validation sur les inputs pour Check si inputs sont valid 
+function isFirstnameValid() {
+  const regexFirstname = /^[a-zA-ZÀ-ÿ- ]{2,}$/;
+  return isFieldValid(firstName, regexFirstname, "Le prénom doit contenir au moins 2 caractères et peut inclure des lettres, des espaces, des tirets et des accents.");
+}
+
+function isLastnameValid() {
+  const regexLastname = /^[a-zA-ZÀ-ÿ- ]{2,}$/;
+  return isFieldValid(lastName, regexLastname, "Le nom de famille doit contenir au moins 2 caractères et peut inclure des lettres, des espaces, des tirets et des accents.");
+}
+
+
 
 function isEmailValid() {
-  const trimmedEmail = email.value.trim();
+  const trimmedEmail = getTrimmedValue(email);
   if (trimmedEmail === '') {
     // Si l'email est vide, on retourne false
     showErrormessage(email, "Veuillez entrer une adresse e-mail.");
@@ -89,7 +86,6 @@ function isEmailValid() {
   }
 
   const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail);
-  console.log('Email validation result:', isValid);
 
   if (!isValid) {
     // Si l'email n'est pas valide, afficher un message d'erreur
@@ -103,11 +99,12 @@ function isEmailValid() {
 }
 
 function isBirthdateValid() {
-  const trimmedBirthdate = birthdate.value.trim();
+  
+  const trimmedBirthdate = getTrimmedValue(birthdate);
 
-  if (trimmedBirthdate === '') {
+  if (trimmedBirthdate === "") {
     // Afficher un message d'erreur pour une date vide
-    showErrormessage(birthdate, "Veuillez renseigner votre date de naissance.");
+    showErrormessage(birthdate, "Vous devez entrer votre date de naissance.");
     return false;
   }
 
@@ -115,19 +112,37 @@ function isBirthdateValid() {
 
   if (!isDateFormatValid) {
     // Afficher un message d'erreur pour un format de date incorrect
-    showErrormessage(birthdate, "Veuillez renseigner une date de naissance au bon format.");
+    showErrormessage(
+      birthdate,
+      "Veuillez renseigner une date de naissance au bon format."
+    );
+    return false;
   } else {
     // Effacer les messages d'erreur précédents pour la date de naissance
     clearErrorMessages(birthdate);
   }
-
   const date = new Date(trimmedBirthdate);
   const currentDate = new Date();
 
-   // Comparer la date de naissance avec la date actuelle
-   if (date.getTime() > currentDate.getTime()) {
+  // Comparer la date de naissance avec la date actuelle
+  if (date.getTime() > currentDate.getTime()) {
     // Afficher un message d'erreur pour une date future
-    showErrormessage(birthdate, "La date de naissance ne peut pas être dans le futur.");
+    showErrormessage(
+      birthdate,
+      "La date de naissance ne peut pas être dans le futur."
+    );
+    return false;
+  }
+
+  // Calculer l'âge en années selon la date selectionné
+  const age = currentDate.getFullYear() - date.getFullYear();
+  // Vérifier si l'âge est inférieur à 16 ans
+  if (age < 16) {
+    // Afficher un message d'erreur pour un âge inférieur à 16 ans 2008
+    showErrormessage(
+      birthdate,
+      "Vous devez avoir au moins 16 ans pour vous inscrire."
+    );
     return false;
   } else {
     // Effacer les messages d'erreur précédents pour la date de naissance
@@ -135,21 +150,43 @@ function isBirthdateValid() {
   }
 
   return true;
-
 }
 
-
 function isQuantityValid() {
-  const quantityValue = quantity.value.trim();
+  const quantityValue = getTrimmedValue(quantity);
 
   // Si la quantité est vide, afficher un message d'erreur
-  if (quantityValue === '') {
+  if (quantityValue === "") {
     showErrormessage(quantity, "Veuillez renseigner ce champ.");
     return false;
   } else {
     // Effacer les messages d'erreur précédents pour la quantité
     clearErrorMessages(quantity);
   }
+
+  // // Vérifier si la quantité est une valeur numérique
+  // Convertir la quantité en nombre
+  //  pourrait retourner NaN
+  const quantityNumber = parseInt(quantityValue);
+  // console.log(quantityNumber);
+  // parseIn sert à convertir une valeur de chaîne (string) en un nombre entier (integer) 
+  if (isNaN(quantityValue)) {
+    // Afficher un message d'erreur pour une valeur non numérique
+    showErrormessage(quantity, "La quantité doit être une valeur numérique.");
+    return false;
+  } else {
+    // Effacer les messages d'erreur précédents pour la quantité
+    clearErrorMessages(quantity);
+  }
+    // Vérifier si la quantité est entre 0 et 99
+    if (quantityNumber < 0 || quantityNumber > 99) {
+      // Afficher un message d'erreur pour une quantité hors de la plage
+      showErrormessage(quantity, "La quantité doit être entre 0 et 99.");
+      return false;
+    } else {
+      // Effacer les messages d'erreur précédents pour la quantité
+      clearErrorMessages(quantity);
+    }
 
   return true;
 }
@@ -172,7 +209,10 @@ function isLocationValid() {
 function isConditionValid() {
   if (!condition.checked) {
     // La condition n'est pas validée, afficher un message d'erreur
-    showErrormessage(condition, "Vous devez vérifier que vous acceptez les termes et conditions.");
+    showErrormessage(
+      condition,
+      "Vous devez vérifier que vous acceptez les termes et conditions."
+    );
     return false;
   }
   return true;
@@ -180,71 +220,80 @@ function isConditionValid() {
 
 // fonction pour afficher les messages d'erreur
 function showErrormessage(element, message) {
-  // element.textContent = message;
-// Vérifier si l'élément existe
-if (element) {
-  // Trouver le conteneur du champ (form-data)
-  const formInputContainer = element.closest('.formData');
-  // Vérifier si le conteneur existe
-  if (formInputContainer) {
-     // Créer un élément div pour le message d'erreur
-    let errorDiv = document.createElement("div");
-    errorDiv.textContent = message;
-    errorDiv.classList.add("error-message");
-     // Ajouter le message d'erreur au conteneur
-     formInputContainer.appendChild(errorDiv);
+  // Vérifier si l'élément existe
+  if (element) {
+    // Trouver le conteneur du champ (form-data)
+    const formInputContainer = element.closest(".formData");
+    // Vérifier si le conteneur existe
+    if (formInputContainer) {
+      // Ajouter l'attribut data-error au conteneur avec le message d'erreur
+      formInputContainer.setAttribute("data-error", message);
+
+      // Ajouter l'attribut data-error-visible au conteneur pour le rendre visible
+      formInputContainer.setAttribute("data-error-visible", "true");
+    }
   }
-}
 }
 // fonction pour effacer les messages d'erreur précédents
 function clearErrorMessages(element) {
-  // Supprimer tous les éléments avec la classe "error-message"
-  let existingErrorMessages = element.parentElement.querySelectorAll(".error-message");
-  existingErrorMessages.forEach((error) => error.remove());
+  // Vérifier si l'élément existe
+  if (element) {
+    // Trouver le conteneur du champ (form-data)
+    const formInputContainer = element.closest(".formData");
+    // Vérifier si le conteneur existe
+    if (formInputContainer) {
+      // Supprimer l'attribut data-error du conteneur
+      formInputContainer.removeAttribute("data-error");
+
+      // Supprimer l'attribut data-error-visible du conteneur pour le rendre invisible
+      formInputContainer.removeAttribute("data-error-visible");
+    }
+  }
 }
 
+// Fonction pour effacer tous les messages d'erreur
+function clearAllErrorMessages() {
+  const formElements = [firstName, lastName, email, birthdate, quantity, ...tournameLocation, condition];
+  formElements.forEach(clearErrorMessages);
+}
 
+// Fonction de réinitialisation du formulaire
+function resetForm() {
+  const formElements = [firstName, lastName, email, birthdate, quantity];
+  formElements.forEach((element) => {
+    element.value = '';
+    clearErrorMessages(element);
+  });
+}
+
+// Gestionnaire d'événement de soumission du formulaire
 form.addEventListener("submit", (event) => {
   // On empêche le comportement par défaut
-    event.preventDefault();
+  event.preventDefault();
 
-     // Effacer les messages d'erreur précédents
-  clearErrorMessages(firstName);
-  clearErrorMessages(lastName);
-  clearErrorMessages(email);
-  clearErrorMessages(birthdate);
-  clearErrorMessages(quantity);
-  // clearErrorMessages(tournameLocation);
-  tournameLocation.forEach(element => clearErrorMessages(element));
-  clearErrorMessages(condition);
-
-  // Vérifier chaque champ et afficher un message d'erreur si nécessaire
-  const isFirstNameValid = isFirstnameValid();
-  const isLastNameValid = isLastnameValid();
-  const isEmailValidResult = isEmailValid();
-  const isBirthdateValidResult = isBirthdateValid();
-  const isQuantityValidResult = isQuantityValid();
-  const isLocationValidResult = isLocationValid();
-  const isConditionValidResult = isConditionValid();
-  //pour verifier si le form (all inputs) sont valid ou non
-  if (
-    isFirstNameValid &&
-    isLastNameValid &&
-    isEmailValidResult &&
-    isBirthdateValidResult &&
-    isQuantityValidResult &&
-    isLocationValidResult &&
-    isConditionValidResult
-  ) {
-      // console.log("errNotsSubmit");
-      // Soumettre le formulaire si tous les champs sont valides
-       // Form submit
-    form.submit();
-    closeModal();
-
-    modalConfirm.style.display = "block";
-    
-    } 
-
+  // Effacer les messages d'erreur précédents
+  clearAllErrorMessages();
+    const validations = [
+      isFirstnameValid(),
+      isLastnameValid(),
+      isEmailValid(),
+      isBirthdateValid(),
+      isQuantityValid(),
+      isLocationValid(),
+      isConditionValid(),
+    ];
+    // Soumettre le formulaire si tous les champs sont valides
+    // La méthode every() permet de tester si tous les éléments d'un tableau vérifient une condition donnée par une fonction en argument. Cette méthode renvoie un booléen pour le résultat du test.
+    if (validations.every((isValid) => isValid)) {
+      form.submit();
+      closeModal();
+      validationModal.classList.add("active");
+      // setTimeout(() => {
+      //   validationModal.classList.add("active");
+      // }, 100);
+    }
 });
+// const closeConfirmButton = document.querySelector("#closeConfirm");
+// closeConfirmButton.addEventListener("click", closeModal);
+
 
