@@ -5,7 +5,6 @@ console.log(modalCloseButton);
 const modalButtons = document.querySelectorAll(".modal-btn");
 // const formInputContainer = document.querySelectorAll(".formData");
 const form = document.querySelector("form");
-const modalConfirm = document.querySelector(".modal-confirmation");
 // On récupère les champs
 const firstName = document.querySelector("#first");
 const lastName = document.querySelector("#last");
@@ -24,12 +23,6 @@ modalButtons.forEach((btn) => btn.addEventListener("click", launchModal));
 function launchModal() {
   modalBackground.classList.add("active");
 }
-
-function editNav() {
-  const topnav = document.getElementById("myTopnav");
-  topnav.classList.toggle("responsive");
-}
-
 //close modal
 modalCloseButton.addEventListener("click", closeModal);
 //close modal function
@@ -37,7 +30,10 @@ function closeModal() {
   modalBackground.classList.remove("active");
   resetForm();
 }
-
+function editNav() {
+  const topnav = document.getElementById("myTopnav");
+  topnav.classList.toggle("responsive");
+}
 
 // Fonction pour effectuer le trim sur la valeur d'un champ
 // La méthode trim() permet de retirer les blancs en début et fin de chaîne
@@ -49,8 +45,11 @@ function getTrimmedValue(field) {
 function isFieldValid(field, regex, errorMessage) {
   
   const trimmedValue = getTrimmedValue(field);
+  // Récupérer le texte du label associé au champ
+  const label = document.querySelector(`label[for="${field.id}"]`);
+  const labelText = label.textContent.trim();
   if (trimmedValue === "") {
-    showErrormessage(field, `Veuillez entrer 2 caractères ou plus pour ce champ .`);
+    showErrormessage(field, `Veuillez entrer 2 caractères ou plus pour le ${labelText}.`);
     return false;
   }
 
@@ -74,7 +73,10 @@ function isLastnameValid() {
   const regexLastname = /^[a-zA-ZÀ-ÿ- ]{2,}$/;
   return isFieldValid(lastName, regexLastname, "Le nom de famille doit contenir au moins 2 caractères et peut inclure des lettres, des espaces, des tirets et des accents.");
 }
-
+// function isEmailValid() {
+//   const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+//   return isFieldValid(email, regexEmail, "Veuillez entrer une adresse e-mail valide.");
+// }
 
 
 function isEmailValid() {
@@ -124,6 +126,7 @@ function isBirthdateValid() {
   const date = new Date(trimmedBirthdate);
   const currentDate = new Date();
 
+  if (date.getFullYear() > 1930) {
   // Comparer la date de naissance avec la date actuelle
   if (date.getTime() > currentDate.getTime()) {
     // Afficher un message d'erreur pour une date future
@@ -148,7 +151,11 @@ function isBirthdateValid() {
     // Effacer les messages d'erreur précédents pour la date de naissance
     clearErrorMessages(birthdate);
   }
-
+}else {
+  // Afficher un message d'erreur pour une date de naissance trop ancienneshowErrormessage(
+    showErrormessage(birthdate,
+      "La date de naissance ne peut pas être antérieure à 1930."
+    );}
   return true;
 }
 
@@ -238,7 +245,7 @@ function showErrormessage(element, message) {
 function clearErrorMessages(element) {
   // Vérifier si l'élément existe
   if (element) {
-    // Trouver le conteneur du champ (form-data)
+    //  la méthode closest() pour trouver l'élément ascendant le plus proche qui correspond au sélecteur CSS spécifié (ici, ".formData").
     const formInputContainer = element.closest(".formData");
     // Vérifier si le conteneur existe
     if (formInputContainer) {
@@ -288,12 +295,19 @@ form.addEventListener("submit", (event) => {
       form.submit();
       closeModal();
       validationModal.classList.add("active");
-      // setTimeout(() => {
-      //   validationModal.classList.add("active");
-      // }, 100);
+      // validationModal.style.display = "block";
     }
 });
 // const closeConfirmButton = document.querySelector("#closeConfirm");
 // closeConfirmButton.addEventListener("click", closeModal);
 
 
+const closeConfirmationButton = document.getElementById("closeConfirm");
+
+// Gestionnaire d'événement pour le bouton de fermeture de la modalité de confirmation
+closeConfirmationButton.addEventListener("click", closeConfirmationModal);
+
+// Fonction pour fermer la modalité de confirmation
+function closeConfirmationModal() {
+  validationModal.style.display = "none";
+}
