@@ -1,7 +1,8 @@
 // DOM Elements
 const modalBackground = document.querySelector(".bground");
+console.log(modalBackground);
 const modalCloseButton = document.querySelector(".close");
-console.log(modalCloseButton);
+// console.log(modalCloseButton);
 const modalButtons = document.querySelectorAll(".modal-btn");
 // const formInputContainer = document.querySelectorAll(".formData");
 const form = document.querySelector("form");
@@ -15,6 +16,7 @@ const quantity = document.getElementById("quantity");
 const tournameLocation = document.getElementsByName("location");
 const submitBtn = document.querySelector(".btn-submit");
 const validationModal = document.querySelector(".modal-confirmation");
+console.log(validationModal);
 
 // launch modal event
 modalButtons.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -42,8 +44,7 @@ function getTrimmedValue(field) {
 }
 
 // Fonction générique de validation
-function isFieldValid(field, regex, errorMessage) {
-  
+function isFieldValid(field, regex, errorMessage) { 
   const trimmedValue = getTrimmedValue(field);
   // Récupérer le texte du label associé au champ
   const label = document.querySelector(`label[for="${field.id}"]`);
@@ -52,14 +53,11 @@ function isFieldValid(field, regex, errorMessage) {
     showErrormessage(field, `Veuillez entrer 2 caractères ou plus pour le ${labelText}.`);
     return false;
   }
-
   const isValidFormat = regex.test(trimmedValue);
-
   if (!isValidFormat) {
     showErrormessage(field, errorMessage);
     return false;
   }
-
   clearErrorMessages(field);
   return true;
 }
@@ -78,7 +76,6 @@ function isLastnameValid() {
 //   return isFieldValid(email, regexEmail, "Veuillez entrer une adresse e-mail valide.");
 // }
 
-
 function isEmailValid() {
   const trimmedEmail = getTrimmedValue(email);
   if (trimmedEmail === '') {
@@ -86,9 +83,7 @@ function isEmailValid() {
     showErrormessage(email, "Veuillez entrer une adresse e-mail.");
     return false;
   }
-
   const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail);
-
   if (!isValid) {
     // Si l'email n'est pas valide, afficher un message d'erreur
     showErrormessage(email, "Veuillez entrer une adresse e-mail valide.");
@@ -96,7 +91,6 @@ function isEmailValid() {
     // Effacer les messages d'erreur précédents pour l'email
     clearErrorMessages(email);
   }
-
   return isValid;
 }
 
@@ -109,9 +103,7 @@ function isBirthdateValid() {
     showErrormessage(birthdate, "Vous devez entrer votre date de naissance.");
     return false;
   }
-
   const isDateFormatValid = /[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(trimmedBirthdate);
-
   if (!isDateFormatValid) {
     // Afficher un message d'erreur pour un format de date incorrect
     showErrormessage(
@@ -161,7 +153,6 @@ function isBirthdateValid() {
 
 function isQuantityValid() {
   const quantityValue = getTrimmedValue(quantity);
-
   // Si la quantité est vide, afficher un message d'erreur
   if (quantityValue === "") {
     showErrormessage(quantity, "Veuillez renseigner ce champ.");
@@ -170,7 +161,6 @@ function isQuantityValid() {
     // Effacer les messages d'erreur précédents pour la quantité
     clearErrorMessages(quantity);
   }
-
   // // Vérifier si la quantité est une valeur numérique
   // Convertir la quantité en nombre
   //  pourrait retourner NaN
@@ -194,7 +184,6 @@ function isQuantityValid() {
       // Effacer les messages d'erreur précédents pour la quantité
       clearErrorMessages(quantity);
     }
-
   return true;
 }
 
@@ -266,9 +255,10 @@ function clearAllErrorMessages() {
 
 // Fonction de réinitialisation du formulaire
 function resetForm() {
+  form.reset();
   const formElements = [firstName, lastName, email, birthdate, quantity];
   formElements.forEach((element) => {
-    element.value = '';
+    // element.value = '';
     clearErrorMessages(element);
   });
 }
@@ -280,6 +270,7 @@ form.addEventListener("submit", (event) => {
 
   // Effacer les messages d'erreur précédents
   clearAllErrorMessages();
+   // Effectuer les validations des champs
     const validations = [
       isFirstnameValid(),
       isLastnameValid(),
@@ -292,15 +283,22 @@ form.addEventListener("submit", (event) => {
     // Soumettre le formulaire si tous les champs sont valides
     // La méthode every() permet de tester si tous les éléments d'un tableau vérifient une condition donnée par une fonction en argument. Cette méthode renvoie un booléen pour le résultat du test.
     if (validations.every((isValid) => isValid)) {
-      form.submit();
-      closeModal();
+
+      // console.log("Avant d'ajouter la classe"); 
       validationModal.classList.add("active");
-      // validationModal.style.display = "block";
+      // console.log("Après avoir ajouté la classe");
     }
 });
-// const closeConfirmButton = document.querySelector("#closeConfirm");
-// closeConfirmButton.addEventListener("click", closeModal);
 
+
+// function displayValidationModal() {
+//   console.log("Avant d'ajouter la classe");
+//   validationModal.classList.add("active");
+//   console.log("Après avoir ajouté la classe");
+//   // setTimeout(function() {
+//   //   validationModal.classList.remove("active");
+//   // }, 3000);
+// }
 
 const closeConfirmationButton = document.getElementById("closeConfirm");
 
@@ -309,5 +307,7 @@ closeConfirmationButton.addEventListener("click", closeConfirmationModal);
 
 // Fonction pour fermer la modalité de confirmation
 function closeConfirmationModal() {
-  validationModal.style.display = "none";
+  // validationModal.style.display = "none";
+  validationModal.classList.remove("active");
 }
+
