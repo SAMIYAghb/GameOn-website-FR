@@ -250,10 +250,9 @@ function clearAllErrorMessages() {
 
 // Fonction de réinitialisation du formulaire
 function resetForm() {
-  form.reset();
-  const formElements = [firstName, lastName, email, birthdate, quantity];
+  const formElements = [firstName, lastName, email, birthdate, quantity,...tournameLocation,condition];
   formElements.forEach((element) => {
-    // element.value = '';
+    element.value = '';
     clearErrorMessages(element);
   });
 }
