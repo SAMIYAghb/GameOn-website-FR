@@ -99,23 +99,27 @@ function isBirthdateValid() {
     showErrormessage(birthdate, "Vous devez entrer votre date de naissance.");
     return false;
   }
+   // Vérifier le format de date
   const isDateFormatValid = /[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(trimmedBirthdate);
   if (!isDateFormatValid) {
     // Afficher un message d'erreur pour un format de date incorrect
     showErrormessage(
       birthdate,
-      "Veuillez renseigner une date de naissance au bon format."
+      "Veuillez renseigner une date de naissance au bon format (AAAA-MM-JJ)."
     );
     return false;
   } else {
     // Effacer les messages d'erreur précédents pour la date de naissance
     clearErrorMessages(birthdate);
   }
+
+  // Convertir la date de naissance en objet Date
   const date = new Date(trimmedBirthdate);
   const currentDate = new Date();
+  
 
   if (date.getFullYear() > 1930) {
-  // Comparer la date de naissance avec la date actuelle
+//   // Comparer la date de naissance avec la date actuelle
   if (date.getTime() > currentDate.getTime()) {
     // Afficher un message d'erreur pour une date future
     showErrormessage(
@@ -125,7 +129,8 @@ function isBirthdateValid() {
     return false;
   }
 
-  // Calculer l'âge en années selon la date selectionné
+// Comparer la date de naissance avec la date actuelle
+//   // Calculer l'âge en années selon la date selectionné
   const age = currentDate.getFullYear() - date.getFullYear();
   // Vérifier si l'âge est inférieur à 16 ans
   if (age < 16) {
@@ -139,6 +144,19 @@ function isBirthdateValid() {
     // Effacer les messages d'erreur précédents pour la date de naissance
     clearErrorMessages(birthdate);
   }
+  /*******/ 
+  
+  if (date.getDate() === 29 && date.getMonth() === 1) {
+    const isLeapYear = (date.getFullYear() % 4 === 0 && date.getFullYear() % 100 !== 0) || (date.getFullYear() % 400 === 0);
+    if (!isLeapYear) {
+      showErrormessage(
+        birthdate,
+        "Le 29 février n'est pas valide pour une année non bissextile."
+      );
+      return false;
+    }
+  }
+  /*******/ 
 }else {
   // Afficher un message d'erreur pour une date de naissance trop ancienneshowErrormessage(
     showErrormessage(birthdate,
@@ -286,3 +304,6 @@ form.addEventListener("submit", (event) => {
 closeConfirmBtn.addEventListener("click", closeConfirmModal);
 
 btnValid.addEventListener("click", closeConfirmModal);
+ function closeConfirmModal(){
+  validationModal.style.display = "none";
+ }
