@@ -1,10 +1,7 @@
 // DOM Elements
 const modalBackground = document.querySelector(".bground");
-console.log(modalBackground);
 const modalCloseButton = document.querySelector(".close");
-// console.log(modalCloseButton);
 const modalButtons = document.querySelectorAll(".modal-btn");
-// const formInputContainer = document.querySelectorAll(".formData");
 const form = document.querySelector("form");
 // On récupère les champs
 const firstName = document.querySelector("#first");
@@ -15,8 +12,11 @@ const condition = document.getElementById("checkbox1");
 const quantity = document.getElementById("quantity");
 const tournameLocation = document.getElementsByName("location");
 const submitBtn = document.querySelector(".btn-submit");
+const closeConfirmBtn = document.getElementById("closeConfirm");
+const btnValid = document.querySelector("#btnValid");
+console.log(closeConfirmBtn);
+console.log(btnValid);
 const validationModal = document.querySelector(".modal-confirmation");
-console.log(validationModal);
 
 // launch modal event
 modalButtons.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -27,6 +27,7 @@ function launchModal() {
 }
 //close modal
 modalCloseButton.addEventListener("click", closeModal);
+
 //close modal function
 function closeModal() {
   modalBackground.classList.remove("active");
@@ -36,6 +37,7 @@ function editNav() {
   const topnav = document.getElementById("myTopnav");
   topnav.classList.toggle("responsive");
 }
+
 
 // Fonction pour effectuer le trim sur la valeur d'un champ
 // La méthode trim() permet de retirer les blancs en début et fin de chaîne
@@ -71,10 +73,6 @@ function isLastnameValid() {
   const regexLastname = /^[a-zA-ZÀ-ÿ- ]{2,}$/;
   return isFieldValid(lastName, regexLastname, "Le nom de famille doit contenir au moins 2 caractères et peut inclure des lettres, des espaces, des tirets et des accents.");
 }
-// function isEmailValid() {
-//   const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-//   return isFieldValid(email, regexEmail, "Veuillez entrer une adresse e-mail valide.");
-// }
 
 function isEmailValid() {
   const trimmedEmail = getTrimmedValue(email);
@@ -165,7 +163,6 @@ function isQuantityValid() {
   // Convertir la quantité en nombre
   //  pourrait retourner NaN
   const quantityNumber = parseInt(quantityValue);
-  // console.log(quantityNumber);
   // parseIn sert à convertir une valeur de chaîne (string) en un nombre entier (integer) 
   if (isNaN(quantityValue)) {
     // Afficher un message d'erreur pour une valeur non numérique
@@ -283,31 +280,16 @@ form.addEventListener("submit", (event) => {
     // Soumettre le formulaire si tous les champs sont valides
     // La méthode every() permet de tester si tous les éléments d'un tableau vérifient une condition donnée par une fonction en argument. Cette méthode renvoie un booléen pour le résultat du test.
     if (validations.every((isValid) => isValid)) {
-
-      // console.log("Avant d'ajouter la classe"); 
+      closeModal();
       validationModal.classList.add("active");
-      // console.log("Après avoir ajouté la classe");
     }
 });
 
+// Ajoutez un gestionnaire d'événement au clic sur le bouton de fermeture
+closeConfirmBtn.addEventListener("click", closeConfirmModal);
+btnValid.addEventListener("click", closeConfirmModal);
 
-// function displayValidationModal() {
-//   console.log("Avant d'ajouter la classe");
-//   validationModal.classList.add("active");
-//   console.log("Après avoir ajouté la classe");
-//   // setTimeout(function() {
-//   //   validationModal.classList.remove("active");
-//   // }, 3000);
-// }
-
-const closeConfirmationButton = document.getElementById("closeConfirm");
-
-// Gestionnaire d'événement pour le bouton de fermeture de la modalité de confirmation
-closeConfirmationButton.addEventListener("click", closeConfirmationModal);
-
-// Fonction pour fermer la modalité de confirmation
-function closeConfirmationModal() {
-  // validationModal.style.display = "none";
-  validationModal.classList.remove("active");
+function closeConfirmModal (){
+  validationModal.style.display = "none";
+  console.log('hello');
 }
-
