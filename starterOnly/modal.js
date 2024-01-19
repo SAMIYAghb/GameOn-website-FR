@@ -119,7 +119,7 @@ function isBirthdateValid() {
   
 
   if (date.getFullYear() > 1930) {
-//   // Comparer la date de naissance avec la date actuelle
+   // Comparer la date de naissance avec la date actuelle
   if (date.getTime() > currentDate.getTime()) {
     // Afficher un message d'erreur pour une date future
     showErrormessage(
@@ -144,25 +144,29 @@ function isBirthdateValid() {
     // Effacer les messages d'erreur précédents pour la date de naissance
     clearErrorMessages(birthdate);
   }
-  /*******/ 
-  
-  if (date.getDate() === 29 && date.getMonth() === 1) {
-    const isLeapYear = (date.getFullYear() % 4 === 0 && date.getFullYear() % 100 !== 0) || (date.getFullYear() % 400 === 0);
-    if (!isLeapYear) {
-      showErrormessage(
-        birthdate,
-        "Le 29 février n'est pas valide pour une année non bissextile."
-      );
-      return false;
-    }
-  }
-  /*******/ 
+
 }else {
   // Afficher un message d'erreur pour une date de naissance trop ancienneshowErrormessage(
     showErrormessage(birthdate,
       "La date de naissance ne peut pas être antérieure à 1930."
-    );}
+    );
+    return false;
+  }
+    /*******/ 
+  if (date.getDate() === 29 && date.getMonth() === 1 && !isLeapYear(date.getFullYear())) {
+    showErrormessage(
+      birthdate,
+      "Le 29 février n'est pas valide pour une année non bissextile."
+    );
+    return false;
+  }
+  
+  /*******/ 
   return true;
+}
+// Fonction pour déterminer si une année est bissextile
+function isLeapYear(year) {
+  return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
 }
 
 function isQuantityValid() {
