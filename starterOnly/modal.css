@@ -1,7 +1,7 @@
 :root {
   --font-default: "DM Sans", Arial, Helvetica, sans-serif;
   --font-slab: var(--font-default);
-  /* --modal-duration: 0.8s; */
+  --modal-duration: 0.8s;
 }
 * {
   box-sizing: border-box;
@@ -173,8 +173,8 @@ main {
   margin: 5% auto;
   width: 100%;
   max-width: 500px;
-  /* animation-name: modalopen; */
-  /* animation-duration: var(--modal-duration); */
+  animation-name: modalopen;
+  animation-duration: var(--modal-duration);
   background: #232323;
   border-radius: 10px;
   overflow: hidden;
@@ -214,7 +214,6 @@ main {
 }
 .modal-confirmation .modal-body{
   height: 85vh;
-
   margin: 0 auto;
   justify-content: space-evenly;
   align-items: center;
@@ -254,7 +253,7 @@ input {
   text-align: left;
   line-height: 0.3;
   opacity: 0;
-  /* transition: 0.3s; */
+  transition: 0.3s;
 }
 .error-message{
   font-size: 0.4em;
@@ -294,7 +293,7 @@ input[data-error]::after {
   position: absolute;
   left: -30px;
   top: -1px;
-  /* transition: 0.3s; */
+  transition: 0.3s;
 }
 .checkbox-label .checkbox-icon::after,
 .checkbox2-label .checkbox-icon::after {
@@ -309,7 +308,7 @@ input[data-error]::after {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  /* transition: 0.3s; */
+  transition: 0.3s;
   opacity: 0;
 }
 .checkbox-input {
@@ -349,31 +348,10 @@ input[data-error]::after {
   cursor: pointer;
   transform: scale(0.7);
 }
-/* .close1 {
-  position: absolute;
-  right: 15px;
-  top: 15px;
-  width: 32px;
-  height: 32px;
-  opacity: 1;
+#closeConfirm{
   cursor: pointer;
-  transform: scale(0.7);
 }
-.close1:before,
-.close1:after {
-  position: absolute;
-  left: 15px;
-  content: " ";
-  height: 33px;
-  width: 3px;
-  background-color: #fff;
-}
-.close1:before {
-  transform: rotate(45deg);
-}
-.close1:after {
-  transform: rotate(-45deg);
-} */
+
 .close:before,
 .close:after {
   position: absolute;
@@ -590,7 +568,7 @@ footer {
   }
 }
 
-/* @keyframes modalopen {
+@keyframes modalopen {
   from {
     opacity: 0;
     transform: translateY(-150px);
@@ -598,7 +576,7 @@ footer {
   to {
     opacity: 1;
   }
-} */
+}
 
 
 /* //modal add class active to bground */

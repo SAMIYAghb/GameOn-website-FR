@@ -14,8 +14,6 @@ const tournameLocation = document.getElementsByName("location");
 const submitBtn = document.querySelector(".btn-submit");
 const closeConfirmBtn = document.getElementById("closeConfirm");
 const btnValid = document.querySelector("#btnValid");
-console.log(closeConfirmBtn);
-console.log(btnValid);
 const validationModal = document.querySelector(".modal-confirmation");
 
 // launch modal event
@@ -51,7 +49,7 @@ function isFieldValid(field, regex, errorMessage) {
   // Récupérer le texte du label associé au champ
   const label = document.querySelector(`label[for="${field.id}"]`);
   const labelText = label.textContent.trim();
-  if (trimmedValue === "") {
+  if (trimmedValue === "" || trimmedValue.length < 2) {
     showErrormessage(field, `Veuillez entrer 2 caractères ou plus pour le ${labelText}.`);
     return false;
   }
@@ -287,9 +285,5 @@ form.addEventListener("submit", (event) => {
 
 // Ajoutez un gestionnaire d'événement au clic sur le bouton de fermeture
 closeConfirmBtn.addEventListener("click", closeConfirmModal);
-btnValid.addEventListener("click", closeConfirmModal);
 
-function closeConfirmModal (){
-  validationModal.style.display = "none";
-  console.log('hello');
-}
+btnValid.addEventListener("click", closeConfirmModal);
